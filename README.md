@@ -16,7 +16,7 @@ Coming soon ...
 
 ## 4. Comparing with us
 
-We encourage a comparative evaluation before officially open-sourcing this project. The original ESVO2 trajectories and GT poses for various sequences on DSEC dataset are available.
+We encourage a comparative evaluation before officially open-sourcing this project. The original ESVO2 trajectories and GT poses for various sequences on DSEC dataset are available [here](https://github.com/NAIL-HNU/ESVO2/tree/main/used_for_cmp).
 
 ## 5. Contact
 
