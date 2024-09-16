@@ -8,7 +8,7 @@ This repository delivers **ESVO2**, an event-based stereo visual-inertial odomet
 
 ### **Related Publications**
 
-[1] **[Event-based Stereo Visual Odometry](https://arxiv.org/abs/2007.15548)**, *Yi Zhou, Guillermo Gallego, Shaojie Shen*, IEEE Transactions on Robotics (T-RO), 37(5):1433-1450, 2021. [Project page](https://sites.google.com/view/esvo-project-page/home) [Link]()
+[1] **[Event-based Stereo Visual Odometry](https://arxiv.org/abs/2007.15548)**, *Yi Zhou, Guillermo Gallego, Shaojie Shen*, IEEE Transactions on Robotics (T-RO), 37(5):1433-1450, 2021. [Project page](https://sites.google.com/view/esvo-project-page/home)
 
 [2] **[Semi-dense 3D Reconstruction with a Stereo Event Camera](https://arxiv.org/abs/1807.07429)**, *Yi Zhou, Guillermo Gallego, Henri Rebecq, Laurent Kneip, Hongdong Li, Davide Scaramuzza*, ECCV 2018. 
 
