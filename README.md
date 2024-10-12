@@ -12,18 +12,231 @@ This repository delivers **ESVO2**, an event-based stereo visual-inertial odomet
 
 [2] **[Semi-dense 3D Reconstruction with a Stereo Event Camera](https://arxiv.org/abs/1807.07429)**, *Yi Zhou, Guillermo Gallego, Henri Rebecq, Laurent Kneip, Hongdong Li, Davide Scaramuzza*, ECCV 2018. 
 
-[3] **[IMU-Aided Event-based Stereo Visual Odometry]()**, *Junkai Niu, Sheng Zhong, Yi Zhou*, ICRA 2024. [Video link](https://github.com/NAIL-HNU/ESVIO_AA.git)
+[3] **[IMU-Aided Event-based Stereo Visual Odometry]()**, *Junkai Niu, Sheng Zhong, Yi Zhou*, ICRA 2024. [Video link](
 
-## 1. Code
+# 1. Installation
 
-Coming soon ...
+We have tested ESVO2 on machines with the following configurations
 
-## 2. Comparing with us
+* Ubuntu 18.04.5 LTS + ROS melodic + gcc 5.5.0 + cmake (>=3.10) + OpenCV 3.2
+* Ubuntu 20.04 LTS + ROS Noetic + OpenCV 4.2
+
+## 1.1 Driver Installation
+
+To work with event cameras, especially for the Dynamic Vision Sensors (DVS/DAVIS), you need to install some drivers. 
+Please follow the instructions (steps 1-9) at [rpg_dvs_ros](https://github.com/uzh-rpg/rpg_dvs_ros) before moving on to the next step. 
+Note that you need to replace the name of the ROS distribution with the one installed on your computer.
+
+We use catkin tools to build the code. You should have it installed during the driver installation.
+
+## 1.2 Dependencies and ESVO2 Installation
+
+You should have created a catkin workspace in Section 3.1. If not, please go back and create one.
+
+**Clone this repository** into the `src` folder of your catkin workspace.
+
+```shell
+cd ~/catkin_ws/src 
+git clone https://github.com/NAIL-HNU/ESVO2.git
+```
+
+Then **clone the required dependency** packages
+
+```shell
+cd ~/catkin_ws/src
+git clone https://github.com/catkin/catkin_simple.git
+git clone https://github.com/uzh-rpg/rpg_dvs_ros.git
+git clone https://github.com/ethz-asl/gflags_catkin.git
+git clone https://github.com/ethz-asl/glog_catkin.git
+git clone https://github.com/ethz-asl/minkindr.git 
+git clone https://github.com/ethz-asl/eigen_catkin.git
+git clone https://github.com/ethz-asl/eigen_checks.git
+git clone https://github.com/ethz-asl/minkindr_ros.git
+git clone https://github.com/ethz-asl/catkin_boost_python_buildtool.git
+git clone https://github.com/ethz-asl/numpy_eigen.git
+```
+
+If you don't have a yaml, please install one. But if you already have the yaml library, please do not install it repeatedly, as it will cause version conflicts.
+
+```shell
+# if you don't have a yaml
+cd ~/catkin_ws/src 
+git clone https://github.com/jbeder/yaml-cpp.git
+cd yaml-cpp
+mkdir build && cd build && cmake -DYAML_BUILD_SHARED_LIBS=ON ..
+make -j
+```
+
+Finally **compile it**.
+
+```shell
+cd ~/catkin_ws
+catkin_make
+```
+
+# 2. Usage
+
+## 2.1 Time Surface and AA map
+
+This package implements a node that constantly updates the stereo event maps (i.e., time surfaces). To launch it independently, open a terminal and run the command:
+
+```shell
+cd ~/catkin_ws
+source devel/setup.bash
+roslaunch image_representation image_representation.launch
+```
+
+Then play the input (already downloaded) bag file by running
+
+```shell
+rosbag play xxx.bag --clock
+```
+
+If lag occurs during the run, try to reduce the rate of rosbag
+
+```shell
+rosbag play xxx.bag --clock -r 0.5
+```
+
+## 2.2 Running the system on DSEC dataset
+
+Since the rosbag with event and IMU data is not given in the DSEC data set, we package the required data as the input of the system. 
+
+You can get part of the rosbag we repacked through the [zurich_city_04a_download link](https://drive.google.com/file/d/14X_iXLNn25mYKAtqgo3qSTQDtxnmyazs/view?usp=drive_link) and the [zurich_city_04b_download link](https://drive.google.com/file/d/1-DnOzkxc-aj7whOrdBoxuQUOXhjazoPw/view?usp=drive_link). 
+In addition, if you need to repack packages from h5 file, please use the code from https://github.com/tub-rip/events_h52bag.
+
+After you get the repackaged data, you can try running it using the following command.
+
+```shell
+cd ~/catkin_ws
+source devel/setup.bash
+roslaunch esvo2_core system_xxx.launch
+```
+
+This will launch two *image_representation nodes* (for left and right event cameras, respectively), the mapping node and the tracking node simultaneously. Then play the input (already downloaded) bag file by running
+
+```shell
+rosbag play xxx.bag --clock
+```
+
+The trajectories will be saved in the path in `/cfg/tracking_xxx.yaml`.
+
+# 3. Comparing with us
 
 We encourage a comparative evaluation before officially open-sourcing this project. The original ESVO2 trajectories and GT poses for various sequences on DSEC dataset are available [here](https://github.com/NAIL-HNU/ESVO2/tree/main/used_for_cmp).
 
-## 3. Contact
+# 4. Parameters (Dynamic Reconfigure)
 
-For questions or inquiries, please feel free to contact us at JunkaiNiu@hnu.edu.cn or eeyzhou@hnu.edu.cn.
+## Image Representation
+- `use_sim_time `: Set `True` for all offline experiments, which use 
+  simulation time. 
 
-We appreciate your interest in our work!
+- `use_stereo_cam `: Set `True` for distortion correction.
+- `representation_mode `: Set `2` to generate AA and TS in paralle.
+- `decay_ms `: The constant exponential decay parameter (unit: ms).
+- `median_blur_kernel_size `: Determines the size of the kernel for denoising the time surface.
+- `blur_size `: Determines the size of the kernel for smoothing the time surface.
+- `is_left `: Left camera or not.
+- `x_patchs `: The patch nums used in AA generation (x dimension).
+- `y_patchs `: The patch nums used in AA generation (y dimension).
+- `generation_rate_hz `: The generation rate of TS and AA.
+
+## Mapping
+**Event Matching**
+
+- `EM_Slice_Thickness`: Determines the thickness of the temporal slice (unit: sec).
+- `EM_Time_THRESHOLD`: Temporal simultaneity threshold.
+- `EM_EPIPOLAR_THRESHOLD`: Epipolar constraint threshold.
+- `EM_TS_NCC_THRESHOLD`: Motion consistency threshold.
+- `EM_NUM_EVENT_MATCHING`: Maximum number of events for event matching.
+
+**Block Matching**
+- `BM_half_slice_thickness` : Determines the thickness of the temporal slice (unit: sec).
+- `BM_min_disparity` : Minimum searching distance for epipolar matching.
+- `BM_max_disparity` : Maximum searching distance for epipolar matching.
+- `BM_step` : Epipolar searching interval.
+- `BM_ZNCC_Threshold` : ZNCC-based matching threshold.
+- `BM_bUpDownConfiguration` : A flag that indicates the direction of the stereo baseline (True: up-down; False: left-right).
+- `bSmoothTimeSurface` : To smooth the time surfaces or not.
+
+**Fusion parameters**
+- `invDepth_min_range` : Lower bound for the resulting inverse depth.
+- `invDepth_max_range` : Upper bound for the resulting inverse depth.
+- `residual_vis_threshold` : Threshold on the temporal residual of the inverse depth estimates.
+- `stdVar_vis_threshold` : Threshold on the uncertainty of the inverse depth estimates.
+- `age_vis_threshold` : Threshold on the number of fusion operations (inverse depth estimates).
+- `age_max_range` : Upper bound for the age (used for visualization only). 
+- `fusion_radius` : Determines the number of pixels that are involved in the depth fusion.
+- `FUSION_STRATEGY` : Fusion strategy. (use CONST_FRAMES or CONST_POINTS)
+- `maxNumFusionFrames` : Determines how many frames (observations) are fused to the current time. (used in CONST_FRAMES mode)
+- `maxNumFusionPoints` : Determines how many points are fused to the current time. (used in CONST_POINTS mode)
+- `Regularization` : Perform regularization on the resulting inverse depth map.
+- `PROCESS_EVENT_NUM` : Maximum number of depth estimates performed at every observation.
+- `TS_HISTORY_LENGTH` : The number of time surfaces maintained.
+- `INIT_SGM_DP_NUM_THRESHOLD` : Minimum number of depth points needed from SGM-based initialization.
+- `mapping_rate_hz` : Updating rate of the mapping node.
+- `patch_size_X` : Size of patches on the time surface for static BM (x dimension).
+- `patch_size_Y` : Size of patches on the time surface for static BM (y dimension).
+- `patch_size_X_2` : Size of patches on the time surface for temporal BM (x dimension).
+- `patch_size_Y_2` : Size of patches on the time surface for temporal BM (y dimension).
+- `LSnorm` : Least squares method choice (use l2 or Tdist).
+- `Tdist_nu` : Parameter of the applied Student's t distribution.
+- `Tdist_scale` : Parameter of the applied Student's t distribution.
+- `Tdist_stdvar` : Parameter of the applied Student's t distribution.
+- `bVisualizeGlobalPC` : Set `True` to visualize global pointcloud.
+- `visualizeGPC_interval` : Time interval to push new points to global pointcloud.
+- `NumGPC_added_oper_refresh` : Number of points pushed to global pointcloud.
+
+**Point Sampling parameters**
+- `Denoising` : This operation helps to denoise events that are induced by reflection of VICON. Set `True` to use.
+- `PROCESS_EVENT_NUM` : The number of points sampled from the newest events for BM .
+- `PROCESS_EVENT_NUM_AA` : The number of points sampled from AA for BM.
+- `x_patchs` : The patch nums used for points sampling on AA (x dimension).
+- `y_patchs` : The patch nums used for points sampling on AA (y dimension).
+- `select_points_from_AA` : Set `True` to use AA for points sampling.
+- `eta_for_select_points` :  The gradient threshold (dx / dy) of sampled points used for static BM.
+
+## Tracking
+- `invDepth_min_range` : Lower bound for the depth of input pointcoud. (Used for visualization only).
+- `invDepth_max_range` : Upper bound for the depth of input pointcoud. (Used for visualization only).
+- `TS_HISTORY_LENGTH` : The number of time surfaces maintained.
+- `REF_HISTORY_LENGTH` : The number of reference local maps maintained.
+- `tracking_rate_hz` : Updating rate of the tracking node.
+- `patch_size_X` : Size of patches on the time surface (x dimension).
+- `patch_size_Y` : Size of patches on the time surface (y dimension).
+- `kernelSize` : Kernel size for smoothing the negative time surface.
+- `MAX_REGISTRATION_POINTS` : Maximum number of 3D points that are involved in the 3D-2D registration.
+- `BATCH_SIZE` : Number of 3D points used in each iteration.
+- `MAX_ITERATION` : Maximum number of iterations.
+- `LSnorm` : Choice of Least-squares method. (use Huber or l2)
+- `huber_threshold` : Huber norm parameter.
+- `MIN_NUM_EVENTS` : Threshold on the number of events occurred since the last observation. This one is used to check if enough stimuli are perceived by the event camera.
+- `RegProblemType `: Jacobian computation manner (`0` numerical; `1` analytical).
+- `SAVE_TRAJECTORY` : Set `True` to save trajectory.
+- `SEQUENCE_NAME` : Assign it when saving the trajectory.
+- `VISUALIZE_TRAJECTORY` : Set `True` to visualize path.
+- `USE_IMU` : Set `True` to use imu data.
+
+# 5. Notes for Good Results
+Real-time performance is witnessed on a desktop with an Intel Core i7-14700k CPU. 
+* To get real-time performance, you need a powerful PC with modern CPUs which supports at least 6 threads. 
+Remember to keep you computer cool!
+* The mapping and tracking are loosely coupled, which indicates that the failure of anyone will lead to bad results of the other, and hence of the whole system.
+* If the initialization does not look reasonably good, reset the system by clicking the checkbox `resetButton` in the dynamic reconfigure. This checker box is used as a button. Sorry for the bad GUI design.  
+* If you use a PC with limited computational resources, you could slow down the playback of the rosbag by a factor, e.g.
+  
+    `$ rosbag play xxx.bag -r 0.5 --clock`
+
+and modify the rate of the external clock (usd for synchronizing the stereo time surfaces) accordingly, e.g.
+    
+    `<node name="global_timer" pkg="rostopic" type="rostopic" args="pub -s -r 50 /sync std_msgs/Time 'now' ">`
+
+In this example, the bag file is played at a factor of 0.5, and thus, the synchronization signal is set to 50 Hz accordingly. These modifications must be made accordingly such that the time surface is updated (refreshed) at 100 Hz in simulation time. You can check this by running,
+
+   `$ rostopic hz /TS_left`
+   `$ rostopic hz /TS_right`
+
+They are both supposed to be approximately 100 Hz.
+* The `esvo2_core` is implemented using hyper-thread techniques. Please modify the number of threads used for mapping and tracking according to your PC's capability. The parameters can be found in `include/esvo2_core/tools/utils.h`.
+* Note that ESVO2 is non-deterministic, namely results may be different each time you run it on the same rosbag file. This is due to stochastic operations involved in the tracking, and also, the parallelism of the system. The performance differs according to the condition of your PC, e.g. you will get better efficiency if you turn off all other running programmes.
+

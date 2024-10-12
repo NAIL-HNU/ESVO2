@@ -1,0 +1,13 @@
+synchronize_on_external_time: True
+use_stereo_cam: True
+representation_mode: 2
+    # Linear_TS //0
+    # AA2(Local decay accumulation) //1
+decay_ms: 20
+median_blur_kernel_size: 1
+blur_size: 7 #15 for 1Mpx
+use_sim_time: True
+is_left: False
+x_patchs: 8
+y_patchs: 6
+generation_rate_hz: 100

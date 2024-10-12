@@ -1,0 +1,65 @@
+# Configuration for depth estimation
+invDepth_min_range: 0.001
+invDepth_max_range: 0.25
+residual_vis_threshold: 30 #20 #30 #20 #20
+residual_vis_threshold_ln: 30
+stdVar_vis_threshold: 1 #0.1 #0.2
+stdVar_vis_threshold_ln: 1 #0.1 #0.2
+age_max_range: 10
+age_vis_threshold: 1
+# patch size of static BM
+patch_size_X: 15 
+patch_size_Y: 7 
+# patch size of temporal BM
+patch_size_X_2: 5
+patch_size_Y_2: 31
+# EventBM parameters
+BM_half_slice_thickness: 0.001
+BM_min_disparity: 0
+BM_max_disparity: 150
+BM_step: 3
+BM_ZNCC_Threshold: 0.2
+BM_bUpDownConfiguration: False
+distance_from_last_frame: 0.20
+SmoothTimeSurface: True #False
+
+# Configuration for fusion
+fusion_radius: 1
+FUSION_STRATEGY: CONST_FRAMES #"CONST_POINTS" # "CONST_FRAMES"
+maxNumFusionFrames: 5 #40
+maxNumFusionFrames_ln: 5
+maxNumFusionPoints: 20000 #8000 #3000
+LSnorm: Tdist #Tdist #Tdist #Tdist # l2
+Tdist_nu: 2.182 #2.1897
+Tdist_scale: 17.277 #16.6397
+Tdist_stdvar: 59.763 #56.5347
+LSnorm_ln: Tdist #Tdist #Tdist #Tdist # l2
+Tdist_nu_ln: 2.182
+Tdist_scale_ln: 17.277
+Tdist_stdvar_ln: 59.763
+
+# Configuration for point sampling
+Denoising: False
+PROCESS_EVENT_NUM: 5000 #20000
+PROCESS_EVENT_NUM_AA: 5000 #20000
+x_patchs: 8 
+y_patchs: 6 
+select_points_from_AA: True
+eta_for_select_points: 0.2
+
+# Configuration for visualization
+Regularization: False
+RegularizationRadius: 20
+RegularizationMinNeighbours: 32
+RegularizationMinCloseNeighbours: 32
+bVisualizeGlobalPC: True
+visualizeGPC_interval: 0.5 #2[second]
+NumGPC_added_per_refresh: 10000
+visualize_range: 30
+
+# Configuration for mapping system
+TS_HISTORY_LENGTH: 100
+USE_IMU: True
+INIT_SGM_DP_NUM_THRESHOLD: 500
+mapping_rate_hz: 20
+large_scale: True

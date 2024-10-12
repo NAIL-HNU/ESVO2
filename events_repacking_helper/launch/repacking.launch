@@ -1,0 +1,7 @@
+<launch>
+  <node name="EventMessageEditor2" pkg="events_repacking_helper" type="EventMessageEditor" output="screen" required="true"
+    args="/home/njk/data/dsec/zurich_city_04_a_event.bag
+          /home/njk/data/dsec/zurich_city_04_a_imu.bag
+          /home/njk/data/dsec/zurich_city_04_a_all.bag">
+  </node>
+</launch>

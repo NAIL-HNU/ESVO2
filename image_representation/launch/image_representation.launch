@@ -1,0 +1,38 @@
+<launch>
+  <rosparam param="/use_sim_time">true</rosparam>
+
+  <!-- Calibration folder -->
+  <arg name="calibInfoDirStr" default="$(find esvo2_core)/calib/dsec/zurich_city_04_a"/>
+  <!-- <arg name="calibInfoDirStr" default="$(find esvo2_core)/calib/rpg"/> -->
+
+  <node name="image_representation_left" pkg="image_representation" type="image_representation" output="screen" >
+    <remap from="events" to="/davis/left/events" />
+    <remap from="imu" to="/davis/left/imu" />
+    <remap from="image" to="/davis/left/image_raw" />
+    <remap from="camera_info" to="/davis/left/camera_info" />
+    <remap from="image_representation_TS_" to="image_representation_TS_l" />
+    <remap from="image_representation_negative_TS_" to="image_representation_negative_TS_l" />
+    <remap from="image_representation_AA_frequency_" to="AA_left" />
+    <remap from="image_representation_AA_mat_" to="AA_map" />
+    <remap from="dx_image_pub_" to="dx_image_pub_l" />
+    <remap from="dy_image_pub_" to="dy_image_pub_l" />
+
+    <rosparam command="load" file="$(find image_representation)/cfg/image_representation_fast.yaml" />
+    <rosparam param="calibInfoDir" subst_value="true">$(arg calibInfoDirStr)</rosparam>
+  </node>
+
+  <node name="image_representation_right" pkg="image_representation" type="image_representation" output="screen" >
+    <remap from="events" to="/davis/right/events" />
+    <remap from="imu" to="/davis/right/imu" />
+    <remap from="image" to="/davis/right/image_raw" />
+    <remap from="camera_info" to="/davis/right/camera_info" />
+    <remap from="image_representation_TS_" to="image_representation_TS_r" />
+
+    <rosparam command="load" file="$(find image_representation)/cfg/image_representation_fast_r.yaml" />
+    <rosparam param="calibInfoDir" subst_value="true">$(arg calibInfoDirStr)</rosparam>
+  </node>
+
+  <!-- Visualization -->
+  <node pkg="rqt_gui" type="rqt_gui" name="rqt_gui" args="--perspective-file $(find esvo2_core)/esvo2_system_DSEC.perspective" />
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find esvo2_core)/esvo2_system_DSEC.rviz" />
+</launch>

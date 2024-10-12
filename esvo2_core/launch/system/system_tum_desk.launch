@@ -1,0 +1,73 @@
+<launch>
+  <rosparam param="/use_sim_time">true</rosparam>
+
+  <!-- Calibration folder -->
+  <arg name="calibInfoDirStr" default="$(find esvo2_core)/calib/tum_desk"/>
+
+  <node name="image_representation_left" pkg="image_representation" type="image_representation" output="screen" >
+    <remap from="events" to="/davis/left/events" />
+    <remap from="imu" to="/davis/left/imu" />
+    <remap from="image" to="/davis/left/image_raw" />
+    <remap from="camera_info" to="/davis/left/camera_info" />
+    <remap from="image_representation_TS_" to="image_representation_TS_l" />
+    <remap from="image_representation_negative_TS_" to="image_representation_negative_TS_l" />
+    <remap from="image_representation_AA_frequency_" to="AA_left" />
+    <remap from="image_representation_AA_mat_" to="AA_map" />
+    <remap from="dx_image_pub_" to="dx_image_pub_l" />
+    <remap from="dy_image_pub_" to="dy_image_pub_l" />
+
+    <rosparam command="load" file="$(find image_representation)/cfg/image_representation_fast.yaml" />
+    <rosparam param="calibInfoDir" subst_value="true">$(arg calibInfoDirStr)</rosparam>
+  </node>
+
+  <node name="image_representation_right" pkg="image_representation" type="image_representation" output="screen" >
+    <remap from="events" to="/davis/right/events" />
+    <remap from="imu" to="/davis/right/imu" />
+    <remap from="image" to="/davis/right/image_raw" />
+    <remap from="camera_info" to="/davis/right/camera_info" />
+    <remap from="image_representation_TS_" to="image_representation_TS_r" />
+
+    <rosparam command="load" file="$(find image_representation)/cfg/image_representation_fast_r.yaml" />
+    <rosparam param="calibInfoDir" subst_value="true">$(arg calibInfoDirStr)</rosparam>
+  </node>
+
+  <!-- Mapping2 node -->
+  <!-- launch-prefix="gdb -ex run -\-args" -->
+  <node name="esvo2_Mapping" pkg="esvo2_core" type="esvo2_Mapping" output="screen" required="true">
+    <remap from="time_surface_left" to="image_representation_TS_l" />
+    <remap from="time_surface_right" to="image_representation_TS_r" />
+    <remap from="time_surface_negative" to="image_representation_negative_TS_l" />
+    <remap from="time_surface_negative_dx" to="dx_image_pub_l" />
+    <remap from="time_surface_negative_dy" to="dy_image_pub_l" />
+    <remap from="stamped_pose" to="/esvo2_tracking/pose_pub" />
+    <remap from="events_left" to="/davis/left/events" />
+    <remap from="events_right" to="/davis/right/events" />
+    <rosparam param="dvs_frame_id">"dvs"</rosparam>
+    <rosparam param="world_frame_id">"map"</rosparam>
+    <rosparam param="calibInfoDir" subst_value="true">$(arg calibInfoDirStr)</rosparam>
+
+    <rosparam command="load" file="$(find esvo2_core)/cfg/mapping/mapping_tum_AA.yaml" />
+  </node>
+
+  <!-- Tracking node -->
+  <node name="esvo2_Tracking" pkg="esvo2_core" type="esvo2_Tracking" output="screen" required="true">
+    <remap from="time_surface_left" to="image_representation_TS_l" />
+    <remap from="time_surface_right" to="image_representation_TS_r" />
+    <remap from="time_surface_negative" to="image_representation_negative_TS_l" />
+    <remap from="time_surface_dx" to="dx_image_pub_l" />
+    <remap from="time_surface_dy" to="dy_image_pub_l" />
+    <remap from="stamped_pose" to="/esvo2_tracking/pose_pub" />
+    <remap from="gt_pose" to="/optitrack/davis_stereo" />
+    <remap from="events_left" to="/davis/left/events" />
+    <remap from="pointcloud" to="/esvo2_mapping/pointcloud_local2" />
+    <rosparam param="dvs_frame_id">"dvs"</rosparam>
+    <rosparam param="world_frame_id">"map"</rosparam>
+    <rosparam param="calibInfoDir" subst_value="true">$(arg calibInfoDirStr)</rosparam>
+
+    <rosparam command="load" file="$(find esvo2_core)/cfg/tracking/tracking_tum_AA.yaml" />
+  </node>
+
+  <!-- Visualization -->
+  <node pkg="rqt_gui" type="rqt_gui" name="rqt_gui" args="--perspective-file $(find esvo2_core)/esvo2_system_DSEC.perspective" />
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find esvo2_core)/esvo2_system.rviz" />
+</launch>
