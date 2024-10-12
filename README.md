@@ -227,10 +227,6 @@ Remember to keep you computer cool!
   
     `$ rosbag play xxx.bag -r 0.5 --clock`
 
-and modify the rate of the external clock (usd for synchronizing the stereo time surfaces) accordingly, e.g.
-    
-    `<node name="global_timer" pkg="rostopic" type="rostopic" args="pub -s -r 50 /sync std_msgs/Time 'now' ">`
-
 In this example, the bag file is played at a factor of 0.5, and thus, the synchronization signal is set to 50 Hz accordingly. These modifications must be made accordingly such that the time surface is updated (refreshed) at 100 Hz in simulation time. You can check this by running,
 
    `$ rostopic hz /TS_left`
