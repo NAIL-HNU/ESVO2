@@ -33,7 +33,7 @@ We use catkin tools to build the code. You should have it installed during the d
 
 ## 1.2 Dependencies and ESVO2 Installation
 
-You should have created a catkin workspace in Section 3.1. If not, please go back and create one.
+You should have created a catkin workspace in Section 1.1. If not, please go back and create one.
 
 **Clone this repository** into the `src` folder of your catkin workspace.
 
