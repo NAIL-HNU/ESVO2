@@ -35,7 +35,7 @@
 #include <pcl_ros/point_cloud.h>
 
 #include <esvo2_core/factor/imu_integration.h>
-#include <events_repacking_helper/V_ba_bg.h>
+#include <events_repacking_tool/V_ba_bg.h>
 
 namespace esvo2_core
 {
@@ -62,7 +62,7 @@ namespace esvo2_core
     // topic callback functions
     void refMapCallback(const sensor_msgs::PointCloud2::ConstPtr &msg);
     void refImuCallback(const sensor_msgs::ImuPtr &msg);
-    void VBaBgCallback(const events_repacking_helper::V_ba_bg &msg);
+    void VBaBgCallback(const events_repacking_tool::V_ba_bg &msg);
     void groundTruthCallback(const geometry_msgs::PoseStampedConstPtr &msg);
     void timeSurface_NegaTS_Callback(
         const sensor_msgs::ImageConstPtr &time_surface_left,

@@ -1,4 +1,4 @@
-# events_repacking_helper
+# events_repacking_tool
 
 This package provides an example of preparing a bag file for ESVO. A bag file recorded by a stereo event camera (e.g., a pair of DAVIS sensors) typically consists of the following topics:
 
@@ -20,7 +20,7 @@ This package provides an example of preparing a bag file for ESVO. A bag file re
 	
 Set the input and output paths as arguments in the file `repacking.launch`, and then run   
 
-   `$ roslaunch events_repacking_helper repacking.launch`
+   `$ roslaunch events_repacking_tool repacking.launch`
 
 This command will return a bag file (e.g., output.bag.events) which only contains the re-packed stereo event and imu messages.
 

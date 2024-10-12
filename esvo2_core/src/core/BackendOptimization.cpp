@@ -265,7 +265,7 @@ if (!(Bgs[WINDOW_SIZE].norm() > 1 || Bas[WINDOW_SIZE].norm() > 1))
 
     void BackendOptimization::publishVBaBg(double time_v)
     {
-      events_repacking_helper::V_ba_bg msg;
+      events_repacking_tool::V_ba_bg msg;
       Eigen::Vector3d V_temp = Rs[WINDOW_SIZE] * RIC_.transpose() * Vs[WINDOW_SIZE];
       msg.head.push_back(time_v);
       if (Bgs[WINDOW_SIZE].norm() > 1 || Bas[WINDOW_SIZE].norm() > 1)

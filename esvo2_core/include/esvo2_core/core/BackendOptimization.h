@@ -9,7 +9,7 @@
 #include <esvo2_core/factor/pose_local_parameterization.h>
 #include <esvo2_core/factor/imu_factor.h>
 #include <esvo2_core/container/DepthMap.h>
-#include <events_repacking_helper/V_ba_bg.h>
+#include <events_repacking_tool/V_ba_bg.h>
 #include <tf/tf.h>
 #include <minkindr_conversions/kindr_tf.h>
 #include <esvo2_core/tools/Visualization.h>

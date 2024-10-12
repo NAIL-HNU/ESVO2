@@ -193,7 +193,7 @@ namespace esvo2_core
 
     // result publishers
     invDepthMap_pub_ = it_.advertise("Inverse_Depth_Map2", 1);
-    V_ba_bg_pub_ = nh_.advertise<events_repacking_helper::V_ba_bg>("/esvo2_mapping/V_ba_bg", 1);
+    V_ba_bg_pub_ = nh_.advertise<events_repacking_tool::V_ba_bg>("/esvo2_mapping/V_ba_bg", 1);
     pc_pub_ = nh_.advertise<PointCloud>("/esvo2_mapping/pointcloud_local2", 1);
     pc_filtered_pub_ = nh_.advertise<PointCloud>("/esvo2_mapping/pointcloud_filtered2", 1);
     if (bVisualizeGlobalPC_)

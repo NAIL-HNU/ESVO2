@@ -397,7 +397,7 @@ void esvo2_Tracking::refImuCallback(const sensor_msgs::ImuPtr& msg)
   }
 }
 
-void esvo2_Tracking::VBaBgCallback(const events_repacking_helper::V_ba_bg& msg)
+void esvo2_Tracking::VBaBgCallback(const events_repacking_tool::V_ba_bg& msg)
 {
   Eigen::Vector3d g_temp, ba_temp, bg_temp, V_temp;
   double t_temp = msg.head[0];

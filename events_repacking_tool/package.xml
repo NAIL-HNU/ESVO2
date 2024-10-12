@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>events_repacking_helper</name>
+  <name>events_repacking_tool</name>
   <version>0.0.0</version>
-  <description>The events_repacking_helper package</description>
+  <description>The events_repacking_tool package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <maintainer email="eeyzhou@ust.hk">zhouyi</maintainer>
