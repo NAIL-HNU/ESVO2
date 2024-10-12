@@ -160,7 +160,7 @@ namespace image_representation
     bool bUseStereoCam_;
     double decay_sec_; // TS param
     int generation_rate_hz_;
-    int x_patchs_, y_patchs_;
+    int x_patches_, y_patches_;
     // std::vector<dvs_msgs::Event>::iterator ptr_e_;
 
     // calib info

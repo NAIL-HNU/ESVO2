@@ -42,8 +42,8 @@ Tdist_stdvar_ln: 59.763
 Denoising: True
 PROCESS_EVENT_NUM: 6000
 PROCESS_EVENT_NUM_AA: 6000
-x_patchs: 4
-y_patchs: 3
+x_patches: 4
+y_patches: 3
 select_points_from_AA: True
 eta_for_select_points: 0.1
 

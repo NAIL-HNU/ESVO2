@@ -51,8 +51,8 @@ namespace image_representation
     nh_private.param<bool>("use_stereo_cam", bUseStereoCam_, true);
     nh_private.param<double>("decay_ms", decay_ms_, 30);
     decay_sec_ = decay_ms_ / 1000.0;
-    nh_private.param<int>("x_patchs", x_patchs_, 8); // patch of AA
-    nh_private.param<int>("y_patchs", y_patchs_, 6);
+    nh_private.param<int>("x_patches", x_patches_, 8); // patch of AA
+    nh_private.param<int>("y_patches", y_patches_, 6);
     nh_private.param<int>("generation_rate_hz", generation_rate_hz_, 100);
     nh_private.param("calibInfoDir", calibInfoDir_, std::string("path is not given"));
     if (!loadCalibInfo(calibInfoDir_, is_left_))
@@ -115,30 +115,30 @@ namespace image_representation
     representation_AA_ = cv::Mat::zeros(sensor_size_, CV_8U);   //for temporal stereo matching
     cv::Mat AA_frequency = cv::Mat::zeros(sensor_size_, CV_8U);   //for point sampling
 
-    std::vector<double> last_activity(x_patchs_ * y_patchs_, 0), event_activity(x_patchs_ * y_patchs_, 0), beta(x_patchs_ * y_patchs_, 0);
-    std::vector<double> last_event_time(x_patchs_ * y_patchs_, 0);
-    std::vector<bool> flag(x_patchs_ * y_patchs_, true);
+    std::vector<double> last_activity(x_patches_ * y_patches_, 0), event_activity(x_patches_ * y_patches_, 0), beta(x_patches_ * y_patches_, 0);
+    std::vector<double> last_event_time(x_patches_ * y_patches_, 0);
+    std::vector<bool> flag(x_patches_ * y_patches_, true);
     int flags = 0;
     double conv_thresh_ = 0.95; // convergence threshold
-    std::vector<double> final_activity(x_patchs_ * y_patchs_, 0);
-    std::vector<int> num(x_patchs_ * y_patchs_, 0);
+    std::vector<double> final_activity(x_patches_ * y_patches_, 0);
+    std::vector<int> num(x_patches_ * y_patches_, 0);
 
-    // std::vector<int> nums_temp(x_patchs_ * y_patchs_, 0);
+    // std::vector<int> nums_temp(x_patches_ * y_patches_, 0);
     int nums_EQ = 0;
     // calculate the final activity by all events, also can be estimated by eq. 3 in the paper
     for (auto it = vEvents_.begin(); it != ptr_e; it++)
     {
       dvs_msgs::Event e = *it;
-      int y = e.y / (int)ceil((double)sensor_size_.height / (double)y_patchs_);
-      int x = e.x / (int)ceil((double)sensor_size_.width / (double)x_patchs_);
-      beta[y * x_patchs_ + x] = 1 / (1 + final_activity[y * x_patchs_ + x] * abs(e.ts.toSec() - last_event_time[y * x_patchs_ + x])); // eq. 2
-      if (y * x_patchs_ + x >= x_patchs_ * y_patchs_)
+      int y = e.y / (int)ceil((double)sensor_size_.height / (double)y_patches_);
+      int x = e.x / (int)ceil((double)sensor_size_.width / (double)x_patches_);
+      beta[y * x_patches_ + x] = 1 / (1 + final_activity[y * x_patches_ + x] * abs(e.ts.toSec() - last_event_time[y * x_patches_ + x])); // eq. 2
+      if (y * x_patches_ + x >= x_patches_ * y_patches_)
         exit(-1);
-      final_activity[y * x_patchs_ + x] = beta[y * x_patchs_ + x] * final_activity[y * x_patchs_ + x] + 1; // eq. 1
-      last_event_time[y * x_patchs_ + x] = e.ts.toSec();
-      // nums_temp[y * x_patchs_ + x]++;
+      final_activity[y * x_patches_ + x] = beta[y * x_patches_ + x] * final_activity[y * x_patches_ + x] + 1; // eq. 1
+      last_event_time[y * x_patches_ + x] = e.ts.toSec();
+      // nums_temp[y * x_patches_ + x]++;
     }
-    // for(int i = 0; i < x_patchs_ * y_patchs_; i++)
+    // for(int i = 0; i < x_patches_ * y_patches_; i++)
     // final_activity[i] = std::sqrt(1 / (0.01 / nums_temp[i]));  // eq. 3
 
     std::fill(beta.begin(), beta.end(), 0);
@@ -146,33 +146,33 @@ namespace image_representation
     for (auto it = ptr_e; it != vEvents_.begin(); it--) // traverse events in reverse to accumulate the latest events
     {
       dvs_msgs::Event e = *it;
-      int y = e.y / (int)ceil((double)sensor_size_.height / (double)y_patchs_);
-      int x = e.x / (int)ceil((double)sensor_size_.width / (double)x_patchs_);
-      if (flag[y * x_patchs_ + x] != true)
+      int y = e.y / (int)ceil((double)sensor_size_.height / (double)y_patches_);
+      int x = e.x / (int)ceil((double)sensor_size_.width / (double)x_patches_);
+      if (flag[y * x_patches_ + x] != true)
         continue;
-      beta[y * x_patchs_ + x] = 1 / (1 + event_activity[y * x_patchs_ + x] * abs(e.ts.toSec() - last_event_time[y * x_patchs_ + x])); // eq. 2
-      event_activity[y * x_patchs_ + x] = beta[y * x_patchs_ + x] * event_activity[y * x_patchs_ + x] + 1;                            // eq. 1
-      last_event_time[y * x_patchs_ + x] = e.ts.toSec();
+      beta[y * x_patches_ + x] = 1 / (1 + event_activity[y * x_patches_ + x] * abs(e.ts.toSec() - last_event_time[y * x_patches_ + x])); // eq. 2
+      event_activity[y * x_patches_ + x] = beta[y * x_patches_ + x] * event_activity[y * x_patches_ + x] + 1;                            // eq. 1
+      last_event_time[y * x_patches_ + x] = e.ts.toSec();
       AA_frequency.at<uchar>(e.y, e.x)++;
-      num[y * x_patchs_ + x]++;
+      num[y * x_patches_ + x]++;
       if (AA_frequency.at<uchar>(e.y, e.x) >= 1)
         representation_AA_.at<uchar>(e.y, e.x) = 255;
-      if (num[y * x_patchs_ + x] >= 10) // each patch is checked for convergence once every ten events accumulated
+      if (num[y * x_patches_ + x] >= 10) // each patch is checked for convergence once every ten events accumulated
       {
-        if (last_activity[y * x_patchs_ + x] != 0)
+        if (last_activity[y * x_patches_ + x] != 0)
         {
-          if ((abs(event_activity[y * x_patchs_ + x] - final_activity[y * x_patchs_ + x])) < conv_thresh_)
+          if ((abs(event_activity[y * x_patches_ + x] - final_activity[y * x_patches_ + x])) < conv_thresh_)
           {
-            flag[y * x_patchs_ + x] = false;
+            flag[y * x_patches_ + x] = false;
             flags++;
-            if (flags == x_patchs_ * y_patchs_)
+            if (flags == x_patches_ * y_patches_)
               break;
             else
               continue;
           }
         }
-        last_activity[y * x_patchs_ + x] = event_activity[y * x_patchs_ + x];
-        num[y * x_patchs_ + x] = 0;
+        last_activity[y * x_patches_ + x] = event_activity[y * x_patches_ + x];
+        num[y * x_patches_ + x] = 0;
       }
     }
 

@@ -131,8 +131,8 @@ namespace esvo2_core
     BM_patch_size_Y_ = tools::param(pnh_, "patch_size_Y", 25);
     BM_patch_size_X_2_ = tools::param(pnh_, "patch_size_X_2", 25);
     BM_patch_size_Y_2_ = tools::param(pnh_, "patch_size_Y_2", 25);
-    x_patchs_ = tools::param(pnh_, "x_patchs", 8);
-    y_patchs_ = tools::param(pnh_, "y_patchs", 6);
+    x_patches_ = tools::param(pnh_, "x_patches", 8);
+    y_patches_ = tools::param(pnh_, "y_patches", 6);
     BM_min_disparity_ = tools::param(pnh_, "BM_min_disparity", 3);
     BM_max_disparity_ = tools::param(pnh_, "BM_max_disparity", 40);
     BM_step_ = tools::param(pnh_, "BM_step", 1);
@@ -958,10 +958,10 @@ namespace esvo2_core
     EventQueue EQ_tmp;
     cv::Mat resultImg = cv_ptr_left->image.clone();
 
-    std::vector<std::vector<std::pair<int, cv::Point>>> roi_events(x_patchs_ * y_patchs_);
-    std::vector<int> num_of_roi(x_patchs_ * y_patchs_, 0);
+    std::vector<std::vector<std::pair<int, cv::Point>>> roi_events(x_patches_ * y_patches_);
+    std::vector<int> num_of_roi(x_patches_ * y_patches_, 0);
     cv::Mat AA = cv::Mat::zeros(resultImg.size(), resultImg.type());
-    std::vector<int> num_processed(x_patchs_ * y_patchs_, 0);
+    std::vector<int> num_processed(x_patches_ * y_patches_, 0);
     for (int y = 0; y < resultImg.rows; y++)
     {
       for (int x = 0; x < resultImg.cols; x++)
@@ -969,16 +969,16 @@ namespace esvo2_core
         if (resultImg.at<uchar>(y, x) > 0)
         {
           num_of_resultImg++;
-          int index = (y / (int)ceil((double)resultImg.rows / (double)y_patchs_)) * (x_patchs_) + (x / (int)ceil((double)resultImg.cols / (double)x_patchs_));
+          int index = (y / (int)ceil((double)resultImg.rows / (double)y_patches_)) * (x_patches_) + (x / (int)ceil((double)resultImg.cols / (double)x_patches_));
           num_of_roi[index]++;
           roi_events[index].push_back(std::make_pair((int)resultImg.at<uchar>(y, x), cv::Point(x, y)));
         }
       }
     }
-    std::vector<double> ratios(x_patchs_ * y_patchs_, 0);
+    std::vector<double> ratios(x_patches_ * y_patches_, 0);
     cv::Mat events_map = cv::Mat::zeros(cv_ptr_left->image.size(), cv_ptr_left->image.type());
     cv::cvtColor(events_map, events_map, cv::COLOR_GRAY2BGR);
-    for (int i = 0; i < (x_patchs_ * y_patchs_); i++)
+    for (int i = 0; i < (x_patches_ * y_patches_); i++)
     {
       // shuffle and sort the event points to ensure sampling uniformity as much as possible
       random_shuffle(roi_events[i].begin(), roi_events[i].end());
@@ -1001,10 +1001,10 @@ namespace esvo2_core
     int empty_num = PROCESS_EVENT_NUM_AA_ - EQ_tmp.size();
     if (empty_num > 0)
     {
-      for (int i = 0; i < (x_patchs_ * y_patchs_); i++)
+      for (int i = 0; i < (x_patches_ * y_patches_); i++)
       {
-        persent_of_point = std::min(((double)empty_num) / x_patchs_ * y_patchs_, 1.);
-        for (int j = num_processed[i]; j < std::min((size_t)(PROCESS_EVENT_NUM_AA_ * ratios[i]) + empty_num / (x_patchs_ * y_patchs_), roi_events[i].size() / 2); j++)
+        persent_of_point = std::min(((double)empty_num) / x_patches_ * y_patches_, 1.);
+        for (int j = num_processed[i]; j < std::min((size_t)(PROCESS_EVENT_NUM_AA_ * ratios[i]) + empty_num / (x_patches_ * y_patches_), roi_events[i].size() / 2); j++)
         {
           dvs_msgs::Event e;
           e.x = roi_events[i][j].second.x;

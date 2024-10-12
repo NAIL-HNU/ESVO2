@@ -2,17 +2,19 @@
 
 This repository delivers **ESVO2**, an event-based stereo visual-inertial odometry system built on top of our previous work ESVO [1]. It is a direct method that solves the tracking and mapping problems in parallel by leveraging the spatio-temporal coherence in the stereo event data. It alleviates ESVO's high computational complexity in mapping and address its degeneracy in camera pose tracking. To the best of our knowledge, the system is the first published work that achieves real-time performance using a standard CPU on event cameras of VGA pixel resolution. 
 
-**Video**
+### **Video**
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/mdhomp3OCbE/mqdefault.jpg)](https://youtu.be/mdhomp3OCbE) &nbsp;&nbsp; 
 
 ### **Related Publications**
 
-[1] **[Event-based Stereo Visual Odometry](https://arxiv.org/abs/2007.15548)**, *Yi Zhou, Guillermo Gallego, Shaojie Shen*, IEEE Transactions on Robotics (T-RO), 37(5):1433-1450, 2021. [Project page](https://sites.google.com/view/esvo-project-page/home)
+[1] **[ESVO2: Direct Visual-Inertial Odometry with Stereo Event Cameras](https://arxiv.org/abs/2405.04071)**, *Junkai Niu, Sheng Zhong, Xiuyuan Lu, Shaojie Shen, Guillermo Gallego, Yi Zhou*, arxiv. PDF (coming soon), [Video](https://youtu.be/mdhomp3OCbE).
 
-[2] **[Semi-dense 3D Reconstruction with a Stereo Event Camera](https://arxiv.org/abs/1807.07429)**, *Yi Zhou, Guillermo Gallego, Henri Rebecq, Laurent Kneip, Hongdong Li, Davide Scaramuzza*, ECCV 2018. 
+[2] **[IMU-Aided Event-based Stereo Visual Odometry](https://arxiv.org/abs/2405.04071)**, *Junkai Niu, Sheng Zhong, Yi Zhou*, ICRA 2024. [PDF](https://arxiv.org/pdf/2405.04071), [Video](https://b23.tv/86adQ8p).
 
-[3] **[IMU-Aided Event-based Stereo Visual Odometry]()**, *Junkai Niu, Sheng Zhong, Yi Zhou*, ICRA 2024. [Video link](
+[3] **[Event-based Stereo Visual Odometry](https://arxiv.org/abs/2007.15548)**, *Yi Zhou, Guillermo Gallego, Shaojie Shen*, IEEE Transactions on Robotics (T-RO), 37(5):1433-1450, 2021. [Project page](https://sites.google.com/view/esvo-project-page/home), [PDF](https://arxiv.org/pdf/2007.15548), [Video](https://youtu.be/3CPPs1gz04k).
+
+[4] **[Semi-dense 3D Reconstruction with a Stereo Event Camera](https://arxiv.org/abs/1807.07429)**, *Yi Zhou, Guillermo Gallego, Henri Rebecq, Laurent Kneip, Hongdong Li, Davide Scaramuzza*, ECCV 2018. [PDF](http://rpg.ifi.uzh.ch/docs/ECCV18_Zhou.pdf), [Poster](http://rpg.ifi.uzh.ch/docs/ECCV18_Zhou_poster.pdf), [Video](https://youtu.be/Qrnpj2FD1e4).
 
 # 1. Installation
 
@@ -128,6 +130,7 @@ We encourage a comparative evaluation before officially open-sourcing this proje
 # 4. Parameters (Dynamic Reconfigure)
 
 ## Image Representation
+
 - `use_sim_time `: Set `True` for all offline experiments, which use 
   simulation time. 
 
@@ -137,11 +140,12 @@ We encourage a comparative evaluation before officially open-sourcing this proje
 - `median_blur_kernel_size `: Determines the size of the kernel for denoising the time surface.
 - `blur_size `: Determines the size of the kernel for smoothing the time surface.
 - `is_left `: Left camera or not.
-- `x_patchs `: The patch nums used in AA generation (x dimension).
-- `y_patchs `: The patch nums used in AA generation (y dimension).
+- `x_patches `: The patch nums used in AA generation (x dimension).
+- `y_patches `: The patch nums used in AA generation (y dimension).
 - `generation_rate_hz `: The generation rate of TS and AA.
 
 ## Mapping
+
 **Event Matching**
 
 - `EM_Slice_Thickness`: Determines the thickness of the temporal slice (unit: sec).
@@ -151,6 +155,7 @@ We encourage a comparative evaluation before officially open-sourcing this proje
 - `EM_NUM_EVENT_MATCHING`: Maximum number of events for event matching.
 
 **Block Matching**
+
 - `BM_half_slice_thickness` : Determines the thickness of the temporal slice (unit: sec).
 - `BM_min_disparity` : Minimum searching distance for epipolar matching.
 - `BM_max_disparity` : Maximum searching distance for epipolar matching.
@@ -160,6 +165,7 @@ We encourage a comparative evaluation before officially open-sourcing this proje
 - `bSmoothTimeSurface` : To smooth the time surfaces or not.
 
 **Fusion parameters**
+
 - `invDepth_min_range` : Lower bound for the resulting inverse depth.
 - `invDepth_max_range` : Upper bound for the resulting inverse depth.
 - `residual_vis_threshold` : Threshold on the temporal residual of the inverse depth estimates.
@@ -188,15 +194,17 @@ We encourage a comparative evaluation before officially open-sourcing this proje
 - `NumGPC_added_oper_refresh` : Number of points pushed to global pointcloud.
 
 **Point Sampling parameters**
+
 - `Denoising` : This operation helps to denoise events that are induced by reflection of VICON. Set `True` to use.
 - `PROCESS_EVENT_NUM` : The number of points sampled from the newest events for BM .
 - `PROCESS_EVENT_NUM_AA` : The number of points sampled from AA for BM.
-- `x_patchs` : The patch nums used for points sampling on AA (x dimension).
-- `y_patchs` : The patch nums used for points sampling on AA (y dimension).
+- `x_patches` : The patch nums used for points sampling on AA (x dimension).
+- `y_patches` : The patch nums used for points sampling on AA (y dimension).
 - `select_points_from_AA` : Set `True` to use AA for points sampling.
 - `eta_for_select_points` :  The gradient threshold (dx / dy) of sampled points used for static BM.
 
 ## Tracking
+
 - `invDepth_min_range` : Lower bound for the depth of input pointcoud. (Used for visualization only).
 - `invDepth_max_range` : Upper bound for the depth of input pointcoud. (Used for visualization only).
 - `TS_HISTORY_LENGTH` : The number of time surfaces maintained.
@@ -218,6 +226,7 @@ We encourage a comparative evaluation before officially open-sourcing this proje
 - `USE_IMU` : Set `True` to use imu data.
 
 # 5. Notes for Good Results
+
 - Real-time performance is witnessed on a desktop with an Intel Core i7-14700k CPU. 
 
 * To get real-time performance, you need a powerful PC with modern CPUs which supports at least 6 threads. 
@@ -226,16 +235,15 @@ We encourage a comparative evaluation before officially open-sourcing this proje
 * The mapping and tracking are loosely coupled, which indicates that the failure of anyone will lead to bad results of the other, and hence of the whole system.
 
 * If you use a PC with limited computational resources, you could slow down the playback of the rosbag by a factor, e.g.
-  
-    `$ rosbag play xxx.bag -r 0.5 --clock`
+
+  `$ rosbag play xxx.bag -r 0.5 --clock`
 
 - In this example, the bag file is played at a factor of 0.5, and thus, the synchronization signal is set to 50 Hz accordingly. These modifications must be made accordingly such that the time surface is updated (refreshed) at 100 Hz in simulation time. You can check this by running,
 
-   `$ rostopic hz /TS_left`
-   `$ rostopic hz /TS_right`
+  `$ rostopic hz /TS_left`
+  `$ rostopic hz /TS_right`
 
   They are both supposed to be approximately 100 Hz.
 
 * The `esvo2_core` is implemented using hyper-thread techniques. Please modify the number of threads used for mapping and tracking according to your PC's capability. The parameters can be found in `include/esvo2_core/tools/utils.h`.
 * Note that ESVO2 is non-deterministic, namely results may be different each time you run it on the same rosbag file. This is due to stochastic operations involved in the tracking, and also, the parallelism of the system. The performance differs according to the condition of your PC, e.g. you will get better efficiency if you turn off all other running programmes.
-

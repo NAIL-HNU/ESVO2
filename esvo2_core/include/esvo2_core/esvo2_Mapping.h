@@ -247,7 +247,7 @@ namespace esvo2_core
     bool BM_bUpDownConfiguration_;
     bool bUSE_IMU_;
     // Select points from AA
-    int x_patchs_, y_patchs_;
+    int x_patches_, y_patches_;
 
     double distance_from_last_frame_;
 

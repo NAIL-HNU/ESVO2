@@ -8,6 +8,6 @@ median_blur_kernel_size: 1
 blur_size: 7 #15 for 1Mpx
 use_sim_time: True
 is_left: False
-x_patchs: 8
-y_patchs: 6
+x_patches: 8
+y_patches: 6
 generation_rate_hz: 40
