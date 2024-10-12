@@ -218,21 +218,24 @@ We encourage a comparative evaluation before officially open-sourcing this proje
 - `USE_IMU` : Set `True` to use imu data.
 
 # 5. Notes for Good Results
-Real-time performance is witnessed on a desktop with an Intel Core i7-14700k CPU. 
+- Real-time performance is witnessed on a desktop with an Intel Core i7-14700k CPU. 
+
 * To get real-time performance, you need a powerful PC with modern CPUs which supports at least 6 threads. 
-Remember to keep you computer cool!
+  Remember to keep you computer cool!
+
 * The mapping and tracking are loosely coupled, which indicates that the failure of anyone will lead to bad results of the other, and hence of the whole system.
-* If the initialization does not look reasonably good, reset the system by clicking the checkbox `resetButton` in the dynamic reconfigure. This checker box is used as a button. Sorry for the bad GUI design.  
+
 * If you use a PC with limited computational resources, you could slow down the playback of the rosbag by a factor, e.g.
   
     `$ rosbag play xxx.bag -r 0.5 --clock`
 
-In this example, the bag file is played at a factor of 0.5, and thus, the synchronization signal is set to 50 Hz accordingly. These modifications must be made accordingly such that the time surface is updated (refreshed) at 100 Hz in simulation time. You can check this by running,
+- In this example, the bag file is played at a factor of 0.5, and thus, the synchronization signal is set to 50 Hz accordingly. These modifications must be made accordingly such that the time surface is updated (refreshed) at 100 Hz in simulation time. You can check this by running,
 
    `$ rostopic hz /TS_left`
    `$ rostopic hz /TS_right`
 
-They are both supposed to be approximately 100 Hz.
+  They are both supposed to be approximately 100 Hz.
+
 * The `esvo2_core` is implemented using hyper-thread techniques. Please modify the number of threads used for mapping and tracking according to your PC's capability. The parameters can be found in `include/esvo2_core/tools/utils.h`.
 * Note that ESVO2 is non-deterministic, namely results may be different each time you run it on the same rosbag file. This is due to stochastic operations involved in the tracking, and also, the parallelism of the system. The performance differs according to the condition of your PC, e.g. you will get better efficiency if you turn off all other running programmes.
 
