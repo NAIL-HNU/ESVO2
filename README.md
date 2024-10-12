@@ -125,7 +125,7 @@ The trajectories will be saved in the path in `/cfg/tracking_xxx.yaml`.
 
 # 3. Comparing with us
 
-We encourage a comparative evaluation before officially open-sourcing this project. The original ESVO2 trajectories and GT poses for various sequences on DSEC dataset are available [here](https://github.com/NAIL-HNU/ESVO2/tree/main/used_for_cmp).
+We encourage a comparative evaluation before officially open-sourcing this project. The original ESVO2 trajectories and GT poses for various sequences on DSEC dataset are available [here](https://github.com/NAIL-HNU/ESVO2/tree/main/results).
 
 # 4. Parameters (Dynamic Reconfigure)
 
