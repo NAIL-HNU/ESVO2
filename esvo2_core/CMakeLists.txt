@@ -19,8 +19,8 @@ catkin_simple(ALL_DEPS_REQUIRED)
 
 find_package(OpenCV REQUIRED)
 
-FIND_PACKAGE(Sophus REQUIRED)
-INCLUDE_DIRECTORIES(${Sophus_INCLUDE_DIRS})
+# FIND_PACKAGE(Sophus REQUIRED)
+# INCLUDE_DIRECTORIES(${Sophus_INCLUDE_DIRS})
 
 find_package(fmt REQUIRED)
 include_directories(${fmt_INCLUDE_DIRS})
