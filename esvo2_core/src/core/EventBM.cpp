@@ -4,6 +4,7 @@
 #include <vector>
 #include <Eigen/Eigenvalues>
 #include <tbb/parallel_for.h>
+#define TBB_PREVIEW_GLOBAL_CONTROL 1
 #include <tbb/global_control.h>
 
 esvo2_core::core::EventBM::EventBM(

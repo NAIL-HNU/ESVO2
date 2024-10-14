@@ -1,6 +1,6 @@
 #include <esvo2_core/core/DepthProblemSolver.h>
 #include <tbb/parallel_for.h>
-#include <tbb/global_control.h>
+// #include <tbb/global_control.h>
 #include <thread>
 #include <functional>
 #include <fstream>

@@ -35,6 +35,7 @@ If you have problems installing libcare, you can try the following command
 
 ```shell
 sudo apt-get install software-properties-common
+sudo add-apt-repository ppa:ubuntu-toolchain-r/test
 sudo add-apt-repository ppa:inivation-ppa/inivation-bionic
 sudo apt-get install libcaer-dev
 ```
@@ -53,6 +54,8 @@ git clone https://github.com/NAIL-HNU/ESVO2.git
 Then **clone the required dependency** packages
 
 ```shell
+sudo apt install libgflags
+sudo apt install libgoogle-glog-dev
 cd ~/catkin_ws/src
 git clone https://github.com/catkin/catkin_simple.git
 git clone https://github.com/uzh-rpg/rpg_dvs_ros.git
