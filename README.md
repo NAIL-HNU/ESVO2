@@ -31,6 +31,14 @@ Note that you need to replace the name of the ROS distribution with the one inst
 
 We use catkin tools to build the code. You should have it installed during the driver installation.
 
+If you have problems installing libcare, you can try the following command
+
+```shell
+sudo apt-get install software-properties-common
+sudo add-apt-repository ppa:inivation-ppa/inivation-bionic
+sudo apt-get install libcaer-dev
+```
+
 ## 1.2 Dependencies and ESVO2 Installation
 
 You should have created a catkin workspace in Section 1.1. If not, please go back and create one.
