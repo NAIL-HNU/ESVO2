@@ -20,8 +20,7 @@ This repository delivers **ESVO2**, an event-based stereo visual-inertial odomet
 
 We have tested ESVO2 on machines with the following configurations
 
-* Ubuntu 18.04.5 LTS + ROS melodic + gcc 5.5.0 + cmake (>=3.10) + OpenCV 3.2
-* Ubuntu 20.04 LTS + ROS Noetic + OpenCV 4.2
+* Ubuntu 20.04 LTS + ROS Noetic + OpenCV 4.2 + Eigen 3.3.9 + Ceres 1.14.0
 
 ## 1.1 Driver Installation
 
