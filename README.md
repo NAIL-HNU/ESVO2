@@ -25,7 +25,7 @@ We have tested ESVO2 on machines with the following configurations
 ## 1.1 Driver Installation
 
 To work with event cameras, especially for the Dynamic Vision Sensors (DVS/DAVIS), you need to install some drivers. 
-Please follow the instructions (steps 1-9) at [rpg_dvs_ros](https://github.com/uzh-rpg/rpg_dvs_ros) before moving on to the next step. 
+Please follow the instructions (steps 1-3) at [rpg_dvs_ros](https://github.com/uzh-rpg/rpg_dvs_ros) before moving on to the next step. 
 Note that you need to replace the name of the ROS distribution with the one installed on your computer.
 
 We use catkin tools to build the code. You should have it installed during the driver installation.
