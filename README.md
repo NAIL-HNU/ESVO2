@@ -114,7 +114,7 @@ rosbag play xxx.bag --clock -r 0.5
 
 Since the rosbag with event and IMU data is not given in the DSEC data set, we package the required data as the input of the system. 
 
-You can get most of the rosbag we repacked through the [download link](链接: https://pan.baidu.com/s/1mhuejFr_hL8GbZDeyCiWmg?pwd=m6by 提取码: m6by). 
+You can get most of the rosbag we repacked through the [download link](https://pan.baidu.com/s/1mhuejFr_hL8GbZDeyCiWmg?pwd=m6by). 
 In addition, if you need to repack packages from h5 file, please use the code from https://github.com/tub-rip/events_h52bag.
 
 After you get the repackaged data, you can try running it using the following command.
