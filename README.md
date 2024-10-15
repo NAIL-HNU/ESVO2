@@ -8,7 +8,7 @@ This repository delivers **ESVO2**, an event-based stereo visual-inertial odomet
 
 ### **Related Publications**
 
-[1] **[ESVO2: Direct Visual-Inertial Odometry with Stereo Event Cameras](https://arxiv.org/abs/2405.04071)**, *Junkai Niu, Sheng Zhong, Xiuyuan Lu, Shaojie Shen, Guillermo Gallego, Yi Zhou*, arxiv. PDF (coming soon), [Video](https://youtu.be/mdhomp3OCbE).
+[1] **[ESVO2: Direct Visual-Inertial Odometry with Stereo Event Cameras](https://arxiv.org/abs/2405.04071)**, *Junkai Niu, Sheng Zhong, Xiuyuan Lu, Shaojie Shen, Guillermo Gallego, Yi Zhou*, arxiv. [PDF](https://arxiv.org/abs/2410.09374), [Video](https://youtu.be/mdhomp3OCbE).
 
 [2] **[IMU-Aided Event-based Stereo Visual Odometry](https://arxiv.org/abs/2405.04071)**, *Junkai Niu, Sheng Zhong, Yi Zhou*, ICRA 2024. [PDF](https://arxiv.org/pdf/2405.04071), [Video](https://b23.tv/86adQ8p).
 
@@ -115,7 +115,7 @@ rosbag play xxx.bag --clock -r 0.5
 
 Since the rosbag with event and IMU data is not given in the DSEC data set, we package the required data as the input of the system. 
 
-You can get part of the rosbag we repacked through the [zurich_city_04a_download link](https://drive.google.com/file/d/14X_iXLNn25mYKAtqgo3qSTQDtxnmyazs/view?usp=drive_link) and the [zurich_city_04b_download link](https://drive.google.com/file/d/1-DnOzkxc-aj7whOrdBoxuQUOXhjazoPw/view?usp=drive_link). 
+You can get most of the rosbag we repacked through the [download link](链接: https://pan.baidu.com/s/1mhuejFr_hL8GbZDeyCiWmg?pwd=m6by 提取码: m6by). 
 In addition, if you need to repack packages from h5 file, please use the code from https://github.com/tub-rip/events_h52bag.
 
 After you get the repackaged data, you can try running it using the following command.
@@ -136,7 +136,7 @@ The trajectories will be saved in the path in `/cfg/tracking_xxx.yaml`.
 
 # 3. Comparing with us
 
-We encourage a comparative evaluation before officially open-sourcing this project. The original ESVO2 trajectories and GT poses for various sequences on DSEC dataset are available [here](https://github.com/NAIL-HNU/ESVO2/tree/main/results).
+The original ESVO2 trajectories and GT poses for various sequences on the 5 datasets mentioned in the paper are available [here](https://github.com/NAIL-HNU/ESVO2/tree/main/results).
 
 # 4. Parameters (Dynamic Reconfigure)
 
