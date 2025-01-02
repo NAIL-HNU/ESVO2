@@ -68,7 +68,7 @@ git clone https://github.com/ethz-asl/catkin_boost_python_buildtool.git
 git clone https://github.com/ethz-asl/numpy_eigen.git
 ```
 
-If you don't have a yaml, please install one. But if you already have the yaml library, please do not install it repeatedly, as it will cause version conflicts.
+If you don't have a yaml library, please install one. But if you already have a yaml library, please do not install it repeatedly, as it will cause version conflicts.
 
 ```shell
 # if you don't have a yaml
@@ -112,9 +112,11 @@ rosbag play xxx.bag --clock -r 0.5
 
 ## 2.2 Running the system on DSEC dataset
 
-Since the rosbag with event and IMU data is not given in the DSEC data set, we package the required data as the input of the system. 
+Since the rosbag with event and IMU data is not provided in the datasets, we repackage the required data as the input for the system.
 
-You can get most of the rosbag we repacked through the [download link](https://pan.baidu.com/s/1mhuejFr_hL8GbZDeyCiWmg?pwd=m6by). 
+You can access most of the rosbag files we repacked through the [download link](https://pan.baidu.com/s/1mhuejFr_hL8GbZDeyCiWmg?pwd=m6by). 
+The repacked data for each dataset is stored in folders named after the dataset. 
+Our own recorded datasets are stored in the "Ours" folder, where "hnu_campus" corresponds to the data shown in Fig. 1 of the ESVO2 paper, and "hnu_peachlake" corresponds to the data shown in Fig. 12 of the paper.
 In addition, if you need to repack packages from h5 file, please use the code from https://github.com/tub-rip/events_h52bag.
 
 After you get the repackaged data, you can try running it using the following command.
