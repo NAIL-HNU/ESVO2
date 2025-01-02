@@ -1,3 +1,4 @@
+#include <fstream>
 #include <image_representation/ImageRepresentation.h>
 #include <opencv2/calib3d/calib3d.hpp>
 #include <opencv2/opencv.hpp>
