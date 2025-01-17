@@ -4,7 +4,7 @@ This repository delivers **ESVO2**, an event-based stereo visual-inertial odomet
 
 ### **Video**
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/mdhomp3OCbE/mqdefault.jpg)](https://youtu.be/mdhomp3OCbE) &nbsp;&nbsp; 
+[![IMAGE ALT TEXT HERE](cover_of_video.png)](https://youtu.be/gmAU32Oeiv8) &nbsp;&nbsp;
 
 ### **Related Publications**
 
