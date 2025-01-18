@@ -8,7 +8,7 @@ This repository delivers **ESVO2**, an event-based stereo visual-inertial odomet
 
 ### **Related Publications**
 
-[1] **[ESVO2: Direct Visual-Inertial Odometry with Stereo Event Cameras](https://arxiv.org/abs/2410.09374)**, *Junkai Niu, Sheng Zhong, Xiuyuan Lu, Shaojie Shen, Guillermo Gallego, Yi Zhou*, arxiv. [PDF](https://arxiv.org/abs/2410.09374), [Video](https://youtu.be/mdhomp3OCbE).
+[1] **[ESVO2: Direct Visual-Inertial Odometry with Stereo Event Cameras](https://arxiv.org/abs/2410.09374)**, *Junkai Niu, Sheng Zhong, Xiuyuan Lu, Shaojie Shen, Guillermo Gallego, Yi Zhou*, arxiv. [PDF](https://arxiv.org/abs/2410.09374), [Video](https://youtu.be/gmAU32Oeiv8).
 
 [2] **[IMU-Aided Event-based Stereo Visual Odometry](https://arxiv.org/abs/2405.04071)**, *Junkai Niu, Sheng Zhong, Yi Zhou*, ICRA 2024. [PDF](https://arxiv.org/pdf/2405.04071), [Video](https://youtu.be/hy25-nExD0E).
 
