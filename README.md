@@ -135,6 +135,11 @@ rosbag play xxx.bag --clock
 
 The trajectories will be saved in the path in `/cfg/tracking_xxx.yaml`.
 
+Please note that our event representations include three types: Time Surface (TS), Blurred TS, and Offset-free TS, whose differences are shown in Figure 6 of the paper. 
+Meanwhile, we also demonstrate their distinctions on a larger scale in the figure below.
+
+<img src="TS_bluredTS_OSTS.png" alt="TS_bluredTS_OSTS"/>
+
 # 3. Comparing with us
 
 The original ESVO2 trajectories and GT poses for various sequences on the 5 datasets mentioned in the paper are available [here](https://github.com/NAIL-HNU/ESVO2/tree/main/results).
