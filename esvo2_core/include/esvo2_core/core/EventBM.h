@@ -1,5 +1,6 @@
 #ifndef ESVO2_CORE_CORE_EVENTBM_H
 #define ESVO2_CORE_CORE_EVENTBM_H
+#include <mutex>
 #include <Eigen/Eigen>
 #include <esvo2_core/tools/utils.h>
 #include <esvo2_core/tools/sobel.h>
